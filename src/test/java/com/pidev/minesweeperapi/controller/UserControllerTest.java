@@ -1,8 +1,8 @@
 package com.pidev.minesweeperapi.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pidev.minesweeperapi.model.User;
 import com.pidev.minesweeperapi.service.UserService;
+import com.pidev.minesweeperapi.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,19 +68,10 @@ public class UserControllerTest {
         User user = new User("name");
 
         mockMvc.perform( MockMvcRequestBuilders.post("/users/")
-                .content(asJsonString(user))
+                .content(JsonUtil.OBJECT_MAPPER.writeValueAsString(user))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
     }
-
-    private static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
 }

@@ -6,14 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * Class that represents a user of the game.
+ * Represents a user of the game.
  */
 @Entity(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     private String name;
 
@@ -22,6 +22,10 @@ public class User {
      */
     public User() {
 
+    }
+
+    public User(long id) {
+        this.id = id;
     }
 
     public User(String name) {
