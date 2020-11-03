@@ -27,6 +27,6 @@ public class Timer {
      * @return the time in seconds.
      */
     public Long total() {
-        return stop - start / 1000 ;
+        return System.currentTimeMillis() - start / 1000 ;
     }
 }

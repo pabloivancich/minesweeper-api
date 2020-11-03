@@ -1,7 +1,10 @@
 package com.pidev.minesweeperapi.service;
 
+import com.pidev.minesweeperapi.factory.GameMapFactory;
 import com.pidev.minesweeperapi.model.Game;
+import com.pidev.minesweeperapi.model.GameMap;
 import com.pidev.minesweeperapi.model.User;
+import com.pidev.minesweeperapi.processor.GameProcessor;
 import com.pidev.minesweeperapi.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +20,12 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
+    private final GameProcessor gameProcessor;
+
     @Autowired
-    public GameService(GameRepository gameRepository) {
+    public GameService(GameRepository gameRepository, GameProcessor gameProcessor) {
         this.gameRepository = gameRepository;
+        this.gameProcessor = gameProcessor;
     }
 
     /**
@@ -47,7 +53,11 @@ public class GameService {
      * @return the game created.
      */
     public Game create(Game game) {
-        return gameRepository.save(game);
+        GameMap map = GameMapFactory.generate(game.getDifficulty());
+        Game newGame = gameRepository.save(game);
+        gameProcessor.getCurrentGames().put(newGame.getUser().getId(), newGame);
+
+        return newGame;
     }
 
 }

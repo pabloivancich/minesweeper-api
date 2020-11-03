@@ -27,6 +27,9 @@ public class Game {
     @Column(name = "time_played")
     private long timePlayed;
 
+    @Column(name = "moves")
+    private int moves;
+
     @Column(name = "mines_revealed")
     private int minesRevealed;
 
