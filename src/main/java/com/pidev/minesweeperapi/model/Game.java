@@ -131,16 +131,16 @@ public class Game {
         return map;
     }
 
-    public void setTimePlayed(long timePlayed) {
-        this.timePlayed = timePlayed;
+    public void addTimePlayed(long timePlayed) {
+        this.timePlayed = this.timePlayed + timePlayed;
     }
 
-    public void setMoves(int moves) {
-        this.moves = moves;
+    public void addMove() {
+        this.moves++;
     }
 
-    public void setMinesRevealed(int minesRevealed) {
-        this.minesRevealed = minesRevealed;
+    public void addMinesRevealed() {
+        this.minesRevealed++;
     }
 
     public void setState(GameState state) {

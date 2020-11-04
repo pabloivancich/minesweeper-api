@@ -1,6 +1,8 @@
 package com.pidev.minesweeperapi.service;
 
-import com.pidev.minesweeperapi.factory.GameMapFactory;
+import com.pidev.minesweeperapi.model.Cell;
+import com.pidev.minesweeperapi.model.CellActionRequest;
+import com.pidev.minesweeperapi.model.CellActionResponse;
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.GameMap;
 import com.pidev.minesweeperapi.model.GameState;
@@ -10,7 +12,7 @@ import com.pidev.minesweeperapi.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +81,37 @@ public class GameService {
             game.setState(GameState.SAVED);
             gameRepository.save(game);
         });
+    }
+
+    /**
+     * Executes an action on a given cell in the current game for an user.
+     * @param userId the user id.
+     * @param cellActionRequest the cell action request.
+     * @return a cell action response.
+     */
+    public CellActionResponse executeCellAction(final Long userId, final CellActionRequest cellActionRequest) {
+        Optional<Game> game = gameProcessor.getUserCurrentGame(userId);
+        List<Cell> cellsRevealed = new ArrayList<>();
+
+        if(game.isPresent()) {
+            switch (cellActionRequest.getAction()) {
+                case REVEAL:
+                    cellsRevealed = gameProcessor.revealCell(game.get(), cellActionRequest);
+                    break;
+                case QUESTION_MARK:
+                    cellsRevealed = gameProcessor.markCellAsQuestionMark(game.get(), cellActionRequest);
+                    break;
+                case RED_FLAG:
+                    cellsRevealed = gameProcessor.markCellAsRedFlag(game.get(), cellActionRequest);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        CellActionResponse response = CellActionResponse.createCellsReavealedResponse(cellsRevealed);
+
+        return response;
     }
 
 }

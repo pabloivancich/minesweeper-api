@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Timer;
 
 @Component
 public class GameProcessor {
@@ -23,6 +24,15 @@ public class GameProcessor {
      */
     private final Map<Long, Game> currentGames = new HashMap<Long, Game>();
 
+    /**
+     * In memory timers for the current games for each player.
+     */
+    private final Map<Long, Timer> currentGamesTimers = new HashMap<>();
+
+    /**
+     * Retrieves the current games map.
+     * @return a map.
+     */
     private Map<Long, Game> getCurrentGames() {
         return currentGames;
     }
@@ -115,31 +125,61 @@ public class GameProcessor {
      * Reveal a {@link Cell}.
      * When a cell with no adjacent mines is revealed, all adjacent squares will be revealed (and repeat).
      *
-     * @param cellActionRequest
+     * @param game the game
+     * @param cellActionRequest the cell action request.
      * @return a list of cells revealed.
      */
     public List<Cell> revealCell(Game game, CellActionRequest cellActionRequest) {
-        return null;
+        Cell cell = game.getMap().getCells().get(cellActionRequest.getRow()).get(cellActionRequest.getColumn());
+        game.addMove();
+        cell.setRevealed(true);
+
+        // Check if cell is a mine and return the list of mines.
+
+        // Check neighbour cells with 0 mines around.
+        List<Cell> cellsRevealed = revealCell(game, cell);
+
+        return List.of(cell);
+    }
+
+    private List<Cell> revealCell(Game game, Cell cell) {
+        List<Cell> cellsRevealed = new ArrayList<>();
+
+        if(cell.getMinesAround() != 0) {
+            System.out.println("Cell with " + cell.getMinesAround() + " mines around");
+            cellsRevealed.add(cell);
+        } else {
+            List<Cell> neighbourCells = findNeighboursCells(game.getMap(), cell);
+            neighbourCells.forEach(neighbourCell -> {
+                revealCell(game, neighbourCell);
+            });
+        }
+        return cellsRevealed;
     }
 
     /**
-     *
-     * @param cellActionRequest
-     * @return
+     * Marks a cell as question mark
+     * @param cellActionRequest the cell action request.
+     * @return a list with the cell marked as question mark.
      */
-    public List<Cell> markCellAsQuestionMark(CellActionRequest cellActionRequest) {
-        return null;
+    public List<Cell> markCellAsQuestionMark(Game game, CellActionRequest cellActionRequest) {
+        Cell cell = game.getMap().getCells().get(cellActionRequest.getRow()).get(cellActionRequest.getColumn());
+        game.addMove();
+        cell.setQuestionMark(true);
+        return List.of(cell);
     }
 
     /**
-     *
-     * @param cellActionRequest
-     * @return
+     * Marks a cell as red flag.
+     * @param cellActionRequest the cell action request.
+     * @return a list with the cell marked as red flag.
      */
-    public List<Cell> markCellAsRedFlag(CellActionRequest cellActionRequest) {
-        return null;
+    public List<Cell> markCellAsRedFlag(Game game, CellActionRequest cellActionRequest) {
+        Cell cell = game.getMap().getCells().get(cellActionRequest.getRow()).get(cellActionRequest.getColumn());
+        game.addMove();
+        game.addMinesRevealed();
+        cell.setRedFlag(true);
+        return List.of(cell);
     }
-
-
 
 }

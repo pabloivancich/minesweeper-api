@@ -1,5 +1,7 @@
 package com.pidev.minesweeperapi.controller;
 
+import com.pidev.minesweeperapi.model.CellActionRequest;
+import com.pidev.minesweeperapi.model.CellActionResponse;
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.User;
 import com.pidev.minesweeperapi.service.GameService;
@@ -43,7 +45,7 @@ public class GameController {
     })
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/",
+            value = "",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<List<Game>> findByUser(
@@ -88,7 +90,7 @@ public class GameController {
     })
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/",
+            value = "",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -117,6 +119,28 @@ public class GameController {
     ) {
         gameService.save(userId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    /**
+     * Executes an action on a given cell in the current game for an user.
+     * @return a response with the information about the execution.
+     */
+    @ApiOperation(value = "Executes an action on a given cell.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Cell action executed successfully.")
+    })
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/cells",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<CellActionResponse> executeCellAction(
+            @RequestParam final long userId,
+            @RequestBody final CellActionRequest request
+    ) {
+        CellActionResponse response = gameService.executeCellAction(userId, request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
