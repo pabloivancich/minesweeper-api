@@ -13,7 +13,8 @@ public class Cell implements Serializable {
     private boolean mine;
     private int minesAround;
     private boolean revealed;
-    private boolean marked;
+    private boolean questionMark;
+    private boolean redFlag;
 
     public Cell() {
 
@@ -25,7 +26,8 @@ public class Cell implements Serializable {
         this.mine = mine;
         this.minesAround = 0;
         this.revealed = false;
-        this.marked = false;
+        this.questionMark = false;
+        this.redFlag = false;
     }
 
     public int getRow() {
@@ -56,12 +58,20 @@ public class Cell implements Serializable {
         this.revealed = revealed;
     }
 
-    public boolean isMarked() {
-        return marked;
+    public boolean isQuestionMark() {
+        return questionMark;
     }
 
-    public void setMarked(boolean marked) {
-        this.marked = marked;
+    public void setQuestionMark(boolean questionMark) {
+        this.questionMark = questionMark;
+    }
+
+    public boolean isRedFlag() {
+        return redFlag;
+    }
+
+    public void setRedFlag(boolean redFlag) {
+        this.redFlag = redFlag;
     }
 
     @Override

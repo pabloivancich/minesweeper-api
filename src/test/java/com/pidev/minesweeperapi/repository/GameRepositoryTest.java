@@ -39,9 +39,6 @@ public class GameRepositoryTest {
 
         Game gameToSave = new Game(
                 "testGame",
-                0,
-                0,
-                GameState.PLAYING,
                 GameDifficulty.BEGINNER,
                 user,
                 new GameMap()
@@ -64,9 +61,6 @@ public class GameRepositoryTest {
 
         Game aGame = new Game(
                 "aGame",
-                0,
-                0,
-                GameState.PLAYING,
                 GameDifficulty.BEGINNER,
                 user,
                 null
@@ -75,9 +69,6 @@ public class GameRepositoryTest {
 
         Game anotherGame = new Game(
                 "anotherGame",
-                0,
-                0,
-                GameState.SAVED,
                 GameDifficulty.INTERMEDIATE,
                 user,
                 null
@@ -101,9 +92,6 @@ public class GameRepositoryTest {
 
         Game aGame = new Game(
                 "aGame",
-                0,
-                0,
-                GameState.PLAYING,
                 GameDifficulty.BEGINNER,
                 user,
                 null
@@ -112,9 +100,6 @@ public class GameRepositoryTest {
 
         Game anotherGame = new Game(
                 "anotherGame",
-                0,
-                0,
-                GameState.SAVED,
                 GameDifficulty.INTERMEDIATE,
                 user,
                 null
@@ -135,9 +120,6 @@ public class GameRepositoryTest {
 
         Game gameToSave = new Game(
                 "testGame",
-                0,
-                0,
-                GameState.PLAYING,
                 GameDifficulty.BEGINNER,
                 user,
                 null
@@ -160,9 +142,6 @@ public class GameRepositoryTest {
 
         Game gameToSave = new Game(
                 "testGame",
-                0,
-                0,
-                GameState.PLAYING,
                 GameDifficulty.BEGINNER,
                 user,
                 null

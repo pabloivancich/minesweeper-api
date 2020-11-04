@@ -81,7 +81,6 @@ public class GameController {
     /**
      * Creates a new game.
      * @param game the game to be created.
-     * @return the game created.
      */
     @ApiOperation(value = "Creates a new game.")
     @ApiResponses(value = {
@@ -93,9 +92,31 @@ public class GameController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Game> create(@RequestBody final Game game) {
-        Game newGame = gameService.create(game);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newGame);
+    public ResponseEntity<Void> create(
+            @RequestBody final Game game
+    ) {
+        gameService.create(game);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * Saves the current game for a given user..
+     */
+    @ApiOperation(value = "Saves the current game for a given user.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Game saved successfully.")
+    })
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            value = "/current",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Void> save(
+            @RequestParam final Long userId
+    ) {
+        gameService.save(userId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

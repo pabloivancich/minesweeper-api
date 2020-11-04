@@ -3,7 +3,6 @@ package com.pidev.minesweeperapi.controller;
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.GameDifficulty;
 import com.pidev.minesweeperapi.model.GameMap;
-import com.pidev.minesweeperapi.model.GameState;
 import com.pidev.minesweeperapi.model.User;
 import com.pidev.minesweeperapi.service.GameService;
 import com.pidev.minesweeperapi.util.JsonUtil;
@@ -53,9 +52,6 @@ public class GameControllerTest {
         User user = new User(1);
         Game game = new Game(
                 "gamename",
-                0,
-                0,
-                GameState.PLAYING,
                 GameDifficulty.BEGINNER,
                 user,
                 new GameMap()
@@ -85,9 +81,6 @@ public class GameControllerTest {
         User user = new User(1);
         Game game = new Game(
                 "gamename",
-                0,
-                0,
-                GameState.PLAYING,
                 GameDifficulty.BEGINNER,
                 user,
                 new GameMap()
@@ -98,6 +91,15 @@ public class GameControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
+
+    @Test
+    public void testSave() throws Exception {
+        mockMvc.perform( MockMvcRequestBuilders.put("/games/current")
+                .param("userId", String.valueOf(1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 

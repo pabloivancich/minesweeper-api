@@ -69,17 +69,14 @@ public class Game {
 
     public Game(
             final String name,
-            final long timePlayed,
-            final int minesRevealed,
-            final GameState state,
             final GameDifficulty difficulty,
             final User user,
             final GameMap map
     ) {
         this.name = name;
-        this.timePlayed = timePlayed;
-        this.minesRevealed = minesRevealed;
-        this.state = state;
+        this.timePlayed = 0;
+        this.minesRevealed = 0;
+        this.state = GameState.PLAYING;
         this.difficulty = difficulty;
         this.moves = 0;
         this.user = user;
@@ -132,5 +129,21 @@ public class Game {
 
     public GameMap getMap() {
         return map;
+    }
+
+    public void setTimePlayed(long timePlayed) {
+        this.timePlayed = timePlayed;
+    }
+
+    public void setMoves(int moves) {
+        this.moves = moves;
+    }
+
+    public void setMinesRevealed(int minesRevealed) {
+        this.minesRevealed = minesRevealed;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
     }
 }

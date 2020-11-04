@@ -2,6 +2,7 @@ package com.pidev.minesweeperapi.processor;
 
 import com.pidev.minesweeperapi.factory.GameMapFactory;
 import com.pidev.minesweeperapi.model.Cell;
+import com.pidev.minesweeperapi.model.CellActionRequest;
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.GameDifficulty;
 import com.pidev.minesweeperapi.model.GameMap;
@@ -22,8 +23,29 @@ public class GameProcessor {
      */
     private final Map<Long, Game> currentGames = new HashMap<Long, Game>();
 
-    public Map<Long, Game> getCurrentGames() {
+    private Map<Long, Game> getCurrentGames() {
         return currentGames;
+    }
+
+    /**
+     * Retrieves the current game for the given user.
+     * @param userId the user id.
+     * @return the game.
+     */
+    public Optional<Game> getUserCurrentGame(final Long userId) {
+        Game currentGame = getCurrentGames().get(userId);
+        return currentGame != null
+                ? Optional.of(currentGame)
+                : Optional.empty();
+    }
+
+    /**
+     * Stores the current game for a given supplier.
+     * If the suppliers already has a game in progress, it will be deleted.
+     * @param game the new current game.
+     */
+    public void storeGame(Game game) {
+        this.getCurrentGames().put(game.getUser().getId(), game);
     }
 
     public GameMap createGameMap(
@@ -51,10 +73,6 @@ public class GameProcessor {
         );
 
         return map;
-    }
-
-    public void storeGame(Game game) {
-        this.getCurrentGames().put(game.getUser().getId(), game);
     }
 
     /**
@@ -92,5 +110,36 @@ public class GameProcessor {
         List<Cell> neighboursCells = findNeighboursCells(map, cell);
         return (int) neighboursCells.stream().filter(Cell::isMine).count();
     }
+
+    /**
+     * Reveal a {@link Cell}.
+     * When a cell with no adjacent mines is revealed, all adjacent squares will be revealed (and repeat).
+     *
+     * @param cellActionRequest
+     * @return a list of cells revealed.
+     */
+    public List<Cell> revealCell(Game game, CellActionRequest cellActionRequest) {
+        return null;
+    }
+
+    /**
+     *
+     * @param cellActionRequest
+     * @return
+     */
+    public List<Cell> markCellAsQuestionMark(CellActionRequest cellActionRequest) {
+        return null;
+    }
+
+    /**
+     *
+     * @param cellActionRequest
+     * @return
+     */
+    public List<Cell> markCellAsRedFlag(CellActionRequest cellActionRequest) {
+        return null;
+    }
+
+
 
 }
