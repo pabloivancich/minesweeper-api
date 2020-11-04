@@ -7,6 +7,7 @@ import com.pidev.minesweeperapi.model.GameDifficulty;
 import com.pidev.minesweeperapi.model.GameMap;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,22 @@ public class GameProcessor {
      * @return a list of neighbour cells.
      */
     private List<Cell> findNeighboursCells(GameMap map, Cell cell) {
-        return List.of();
+        List<Cell> neighbourCells = new ArrayList<>();
+        int cellRow = cell.getRow();
+        int cellColumn = cell.getColumn();
+
+        for(int iRow = cellRow-1; iRow <= cellRow+1 ; iRow ++) {
+            for(int jCol = cellColumn-1; jCol <= cellColumn+1 ; jCol ++) {
+                if(iRow >=0 && iRow < map.getRows() && jCol >= 0 && jCol < map.getColumns()) {
+                    Cell mapCell = map.getCells().get(iRow).get(jCol);
+                    if(!mapCell.equals(cell)) {
+                        neighbourCells.add(mapCell);
+                    }
+                }
+            }
+        }
+
+        return neighbourCells;
     }
 
     /**
