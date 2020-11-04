@@ -2,6 +2,7 @@ package com.pidev.minesweeperapi.controller;
 
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.GameDifficulty;
+import com.pidev.minesweeperapi.model.GameMap;
 import com.pidev.minesweeperapi.model.GameState;
 import com.pidev.minesweeperapi.model.User;
 import com.pidev.minesweeperapi.service.GameService;
@@ -56,7 +57,8 @@ public class GameControllerTest {
                 0,
                 GameState.PLAYING,
                 GameDifficulty.BEGINNER,
-                user
+                user,
+                new GameMap()
         );
 
         given(gameService.findByUserAndName(anyObject(), anyString())).willReturn(Optional.of(game));
@@ -87,7 +89,8 @@ public class GameControllerTest {
                 0,
                 GameState.PLAYING,
                 GameDifficulty.BEGINNER,
-                user
+                user,
+                new GameMap()
         );
 
         mockMvc.perform( MockMvcRequestBuilders.post("/games/")

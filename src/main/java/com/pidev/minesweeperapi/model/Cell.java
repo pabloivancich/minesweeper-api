@@ -1,24 +1,31 @@
 package com.pidev.minesweeperapi.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Represents a cell in the minesweeper game map.
  */
-public class Cell {
+public class Cell implements Serializable {
 
-    private final int row;
-    private final int column;
-    private final boolean mine;
-    private final int minesAround;
+    private int row;
+    private int column;
+    private boolean mine;
+    private int minesAround;
     private boolean revealed;
+    private boolean marked;
 
-    public Cell(final int row, final int column, final boolean mine, final int minesAround) {
+    public Cell() {
+
+    }
+
+    public Cell(final int row, final int column, final boolean mine) {
         this.row = row;
         this.column = column;
         this.mine = mine;
-        this.minesAround = minesAround;
+        this.minesAround = 0;
         this.revealed = false;
+        this.marked = false;
     }
 
     public int getRow() {
@@ -37,12 +44,24 @@ public class Cell {
         return minesAround;
     }
 
+    public void setMinesAround(int minesAround) {
+        this.minesAround = minesAround;
+    }
+
     public boolean isRevealed() {
         return revealed;
     }
 
     public void setRevealed(boolean revealed) {
         this.revealed = revealed;
+    }
+
+    public boolean isMarked() {
+        return marked;
+    }
+
+    public void setMarked(boolean marked) {
+        this.marked = marked;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.pidev.minesweeperapi.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,7 +23,7 @@ public class Game {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "time_played")
@@ -41,12 +43,25 @@ public class Game {
     @Enumerated(EnumType.STRING)
     private GameDifficulty difficulty;
 
+    @Column(name = "rows")
+    private Integer rows;
+
+    @Column(name = "columns")
+    private Integer columns;
+
+    @Column(name = "mines")
+    private Integer mines;
+
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
+    @Column(name = "map")
+    @Type(type = "com.pidev.minesweeperapi.config.hibernate.GameMapType")
+    private GameMap map;
+
     /**
-     * Default constructor. For Hibernate.
+     * Default constructor. For Jackson and Hibernate.
      */
     public Game() {
 
@@ -58,14 +73,17 @@ public class Game {
             final int minesRevealed,
             final GameState state,
             final GameDifficulty difficulty,
-            final User user
+            final User user,
+            final GameMap map
     ) {
         this.name = name;
         this.timePlayed = timePlayed;
         this.minesRevealed = minesRevealed;
         this.state = state;
         this.difficulty = difficulty;
+        this.moves = 0;
         this.user = user;
+        this.map = map;
     }
 
     public long getId() {
@@ -92,7 +110,27 @@ public class Game {
         return difficulty;
     }
 
+    public int getMoves() {
+        return moves;
+    }
+
+    public Integer getRows() {
+        return rows;
+    }
+
+    public Integer getColumns() {
+        return columns;
+    }
+
+    public Integer getMines() {
+        return mines;
+    }
+
     public User getUser() {
         return user;
+    }
+
+    public GameMap getMap() {
+        return map;
     }
 }

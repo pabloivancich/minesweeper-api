@@ -53,9 +53,23 @@ public class GameService {
      * @return the game created.
      */
     public Game create(Game game) {
-        GameMap map = GameMapFactory.generate(game.getDifficulty());
-        Game newGame = gameRepository.save(game);
-        gameProcessor.getCurrentGames().put(newGame.getUser().getId(), newGame);
+        GameMap map = gameProcessor.createGameMap(
+                game.getDifficulty(),
+                game.getRows() != null ? Optional.of(game.getRows()) : Optional.empty(),
+                game.getColumns() != null ? Optional.of(game.getColumns()) : Optional.empty(),
+                game.getMines() != null ? Optional.of(game.getMines()) : Optional.empty()
+        );
+        Game gameToBeCreated = new Game(
+                game.getName(),
+                game.getTimePlayed(),
+                game.getMinesRevealed(),
+                game.getState(),
+                game.getDifficulty(),
+                game.getUser(),
+                map
+        );
+        Game newGame = gameRepository.save(gameToBeCreated);
+        gameProcessor.storeGame(newGame);
 
         return newGame;
     }

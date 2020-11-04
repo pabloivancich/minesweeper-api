@@ -34,8 +34,6 @@ public class GameMapFactory {
      */
     public static GameMap generate(final int rows, final int columns, final int mines) {
         List<Cell> minesList = buildMinesList(rows, columns, mines);
-        System.out.println("Mines generated >> " + minesList.size());
-
         List<List<Cell>> cells = buildCellMatrix(rows, columns, minesList);
 
         return new GameMap(rows, columns, mines, cells);
@@ -81,18 +79,15 @@ public class GameMapFactory {
 
             IntStream.range(0, columns).forEach(column -> {
                 // Find if there is a mine or not.
-                Cell positionCell = new Cell(row, column, false, 0);
+                Cell positionCell = new Cell(row, column, false);
                 boolean isMine = minesList.contains(positionCell);
 
-                Cell newCell = new Cell(row, column, isMine, 0);
+                Cell newCell = new Cell(row, column, isMine);
                 columnList.add(newCell);
             });
 
-            System.out.println("Columns generated >> " + columnList.size());
             rowList.add(columnList);
         });
-
-        System.out.println("Rows generated >> " + rowList.size());
 
         return rowList;
     }
@@ -107,8 +102,7 @@ public class GameMapFactory {
         return new Cell(
                 generateRandomNumber(maxRows),
                 generateRandomNumber(maxColumns),
-                true,
-                0
+                true
         );
     }
 

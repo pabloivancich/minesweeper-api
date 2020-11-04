@@ -1,17 +1,22 @@
 package com.pidev.minesweeperapi.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Represents a minesweeper game map.
  */
-public class GameMap {
+public class GameMap implements Serializable {
 
-    private final int rows;
-    private final int columns;
-    private final int mines;
+    private int rows;
+    private int columns;
+    private int mines;
 
-    private final List<List<Cell>> cells;
+    private List<List<Cell>> cells;
+
+    public GameMap() {
+
+    }
 
     public GameMap(final int rows, final int columns, final int mines, final List<List<Cell>> cells) {
         this.rows = rows;

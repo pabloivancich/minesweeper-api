@@ -21,7 +21,7 @@ public class User {
     private String name;
 
     /**
-     * Default constructor. For Hibernate.
+     * Default constructor. For Jackson and Hibernate.
      */
     public User() {
 
@@ -47,4 +47,5 @@ public class User {
     public String getName() {
         return name;
     }
+
 }

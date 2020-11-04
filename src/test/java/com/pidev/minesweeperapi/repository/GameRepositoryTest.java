@@ -2,6 +2,7 @@ package com.pidev.minesweeperapi.repository;
 
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.GameDifficulty;
+import com.pidev.minesweeperapi.model.GameMap;
 import com.pidev.minesweeperapi.model.GameState;
 import com.pidev.minesweeperapi.model.User;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,8 @@ public class GameRepositoryTest {
                 0,
                 GameState.PLAYING,
                 GameDifficulty.BEGINNER,
-                user
+                user,
+                new GameMap()
         );
 
         Game gameSaved = gameRepository.save(gameToSave);
@@ -66,7 +68,8 @@ public class GameRepositoryTest {
                 0,
                 GameState.PLAYING,
                 GameDifficulty.BEGINNER,
-                user
+                user,
+                null
         );
         aGame = gameRepository.save(aGame);
 
@@ -76,7 +79,8 @@ public class GameRepositoryTest {
                 0,
                 GameState.SAVED,
                 GameDifficulty.INTERMEDIATE,
-                user
+                user,
+                null
         );
         anotherGame = gameRepository.save(anotherGame);
 
@@ -101,7 +105,8 @@ public class GameRepositoryTest {
                 0,
                 GameState.PLAYING,
                 GameDifficulty.BEGINNER,
-                user
+                user,
+                null
         );
         aGame = gameRepository.save(aGame);
 
@@ -111,7 +116,8 @@ public class GameRepositoryTest {
                 0,
                 GameState.SAVED,
                 GameDifficulty.INTERMEDIATE,
-                user
+                user,
+                null
         );
         anotherGame = gameRepository.save(anotherGame);
 
@@ -133,7 +139,8 @@ public class GameRepositoryTest {
                 0,
                 GameState.PLAYING,
                 GameDifficulty.BEGINNER,
-                user
+                user,
+                null
         );
 
         Game gameSaved = gameRepository.save(gameToSave);
@@ -157,7 +164,8 @@ public class GameRepositoryTest {
                 0,
                 GameState.PLAYING,
                 GameDifficulty.BEGINNER,
-                user
+                user,
+                null
         );
         gameRepository.save(gameToSave);
 
