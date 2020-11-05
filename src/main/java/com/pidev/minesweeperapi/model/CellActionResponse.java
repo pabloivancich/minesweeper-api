@@ -32,7 +32,7 @@ public class CellActionResponse {
         return cellsRevealed;
     }
 
-    public static CellActionResponse createCellsReavealedResponse(List<Cell> cellsRevealed) {
+    public static CellActionResponse createCellsRevealedResponse(List<Cell> cellsRevealed) {
         return new CellActionResponse(
                 CELLS_REVEALED_MESSAGE.replace("{{quantity}}", String.valueOf(cellsRevealed.size())),
                 cellsRevealed

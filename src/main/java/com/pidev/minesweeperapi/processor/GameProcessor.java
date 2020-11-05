@@ -7,6 +7,7 @@ import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.GameDifficulty;
 import com.pidev.minesweeperapi.model.GameMap;
 import com.pidev.minesweeperapi.model.GameState;
+import com.pidev.minesweeperapi.util.Timer;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Timer;
 import java.util.stream.Collectors;
 
 @Component
@@ -40,6 +40,14 @@ public class GameProcessor {
     }
 
     /**
+     * Retrieves the current games timers map.
+     * @return a map.
+     */
+    private Map<Long, Timer> getCurrentGamesTimers() {
+        return currentGamesTimers;
+    }
+
+    /**
      * Retrieves the current game for the given user.
      * @param userId the user id.
      * @return the game.
@@ -52,11 +60,25 @@ public class GameProcessor {
     }
 
     /**
+     * Retrieves the current game timer for the given user.
+     * @param userId the user id.
+     * @return the game timer.
+     */
+    private Optional<Timer> getUserCurrentGameTimer(final Long userId) {
+        Timer timer =getCurrentGamesTimers().get(userId);
+        return timer != null
+                ? Optional.of(timer)
+                : Optional.empty();
+    }
+
+    /**
      * Stores the current game for a given supplier.
      * If the suppliers already has a game in progress, it will be deleted.
      * @param game the new current game.
      */
     public void storeGame(Game game) {
+        Timer timer = new Timer();
+        getCurrentGamesTimers().put(game.getUser().getId(), timer);
         this.getCurrentGames().put(game.getUser().getId(), game);
     }
 
@@ -149,7 +171,16 @@ public class GameProcessor {
             game.setState(GameState.FINISHED_WIN);
         }
 
-        return this.getRevealedCells(game);
+        // Adding seconds to the time played.
+        Optional<Timer> timer = getUserCurrentGameTimer(game.getUser().getId());
+        timer.ifPresent(value -> {
+            game.addTimePlayed(value.total());
+            value.restart();
+        });
+
+        List<Cell> cellsRevealed = this.getRevealedCells(game);
+        game.setCellsRevealed(cellsRevealed.size());
+        return cellsRevealed;
     }
 
     /**
@@ -178,6 +209,14 @@ public class GameProcessor {
         Cell cell = game.getMap().getCells().get(cellActionRequest.getRow()).get(cellActionRequest.getColumn());
         game.addMove();
         cell.setQuestionMark(!cell.isQuestionMark());
+
+        // Adding seconds to the time played.
+        Optional<Timer> timer = getUserCurrentGameTimer(game.getUser().getId());
+        timer.ifPresent(value -> {
+            game.addTimePlayed(value.total());
+            value.restart();
+        });
+
         return List.of(cell);
     }
 
@@ -197,6 +236,13 @@ public class GameProcessor {
             cell.setRedFlag(true);
             game.addRedFlag();
         }
+
+        // Adding seconds to the time played.
+        Optional<Timer> timer = getUserCurrentGameTimer(game.getUser().getId());
+        timer.ifPresent(value -> {
+            game.addTimePlayed(value.total());
+            value.restart();
+        });
 
         return List.of(cell);
     }

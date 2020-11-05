@@ -9,7 +9,7 @@ public enum CellAction {
 
     REVEAL("REVEAL"),
     QUESTION_MARK("QUESTION_MARK"),
-    RED_FLAG("QUESTION_MARK");
+    RED_FLAG("RED_FLAG");
 
     private final String action;
 

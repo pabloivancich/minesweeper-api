@@ -4,6 +4,7 @@ CREATE TABLE games (
         difficulty VARCHAR(255) NOT NULL,
         state VARCHAR(255) NOT NULL,
         red_flags INT4,
+        cells_revealed INT4,
         moves INT4,
         time_played INT8,
         user_id INT8 NOT NULL,

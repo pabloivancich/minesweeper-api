@@ -32,6 +32,9 @@ public class Game {
     @Column(name = "moves")
     private int moves;
 
+    @Column(name = "cells_revealed")
+    private int cellsRevealed;
+
     @Column(name = "red_flags")
     private int redFlags;
 
@@ -75,6 +78,7 @@ public class Game {
     ) {
         this.name = name;
         this.timePlayed = 0;
+        this.cellsRevealed = 0;
         this.redFlags = 0;
         this.state = GameState.PLAYING;
         this.difficulty = difficulty;
@@ -97,6 +101,10 @@ public class Game {
 
     public int getRedFlags() {
         return redFlags;
+    }
+
+    public int getCellsRevealed() {
+        return cellsRevealed;
     }
 
     public GameState getState() {
@@ -145,6 +153,10 @@ public class Game {
 
     public void removeRedFlag() {
         this.redFlags--;
+    }
+
+    public void setCellsRevealed(int cellsRevealed) {
+        this.cellsRevealed = cellsRevealed;
     }
 
     public void setState(GameState state) {

@@ -88,7 +88,9 @@ public class GameService {
     public void save(final Long userId) {
         Optional<Game> gameToBeSaved = gameProcessor.getUserCurrentGame(userId);
         gameToBeSaved.ifPresent(game -> {
-            game.setState(GameState.SAVED);
+            if(GameState.PLAYING.equals(game.getState())) {
+                game.setState(GameState.SAVED);
+            }
             gameRepository.save(game);
         });
     }
@@ -121,7 +123,7 @@ public class GameService {
 
         CellActionResponse response;
         switch(game.get().getState()) {
-            case PLAYING: response = CellActionResponse.createCellsReavealedResponse(cellsRevealed);
+            case PLAYING: response = CellActionResponse.createCellsRevealedResponse(cellsRevealed);
                             break;
             case FINISHED_LOSE: response = CellActionResponse.createLoseResponse(cellsRevealed);
                             break;

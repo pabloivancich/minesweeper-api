@@ -13,6 +13,8 @@ public class GameResponse {
 
     private int redFlags;
 
+    private int cellsRevealed;
+
     private String state;
 
     private String difficulty;
@@ -40,6 +42,7 @@ public class GameResponse {
         response.timePlayed = game.getTimePlayed();
         response.moves = game.getMoves();
         response.redFlags = game.getRedFlags();
+        response.cellsRevealed = game.getCellsRevealed();
         response.state = game.getState().state();
         response.difficulty = game.getDifficulty().getDifficulty();
         response.rows = game.getMap().getRows();
@@ -65,6 +68,10 @@ public class GameResponse {
 
     public int getRedFlags() {
         return redFlags;
+    }
+
+    public int getCellsRevealed() {
+        return cellsRevealed;
     }
 
     public String getState() {
