@@ -1,4 +1,6 @@
-package com.pidev.minesweeperapi.model;
+package com.pidev.minesweeperapi.controller.dto;
+
+import com.pidev.minesweeperapi.model.Game;
 
 /**
  * Represents a response with the game information.

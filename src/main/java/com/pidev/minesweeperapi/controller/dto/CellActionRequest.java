@@ -1,4 +1,6 @@
-package com.pidev.minesweeperapi.model;
+package com.pidev.minesweeperapi.controller.dto;
+
+import com.pidev.minesweeperapi.model.CellAction;
 
 /**
  * Class that represents a request to action over a cell.

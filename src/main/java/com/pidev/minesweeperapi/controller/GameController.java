@@ -1,11 +1,10 @@
 package com.pidev.minesweeperapi.controller;
 
-import com.pidev.minesweeperapi.model.CellActionRequest;
-import com.pidev.minesweeperapi.model.CellActionResponse;
+import com.pidev.minesweeperapi.controller.dto.CellActionRequest;
+import com.pidev.minesweeperapi.controller.dto.CellActionResponse;
 import com.pidev.minesweeperapi.model.Game;
-import com.pidev.minesweeperapi.model.GameResponse;
+import com.pidev.minesweeperapi.controller.dto.GameResponse;
 import com.pidev.minesweeperapi.model.User;
-import com.pidev.minesweeperapi.repository.GameRepository;
 import com.pidev.minesweeperapi.service.GameService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

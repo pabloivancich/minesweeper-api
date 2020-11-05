@@ -1,8 +1,8 @@
 package com.pidev.minesweeperapi.service;
 
 import com.pidev.minesweeperapi.model.Cell;
-import com.pidev.minesweeperapi.model.CellActionRequest;
-import com.pidev.minesweeperapi.model.CellActionResponse;
+import com.pidev.minesweeperapi.controller.dto.CellActionRequest;
+import com.pidev.minesweeperapi.controller.dto.CellActionResponse;
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.GameMap;
 import com.pidev.minesweeperapi.model.GameState;

@@ -1,4 +1,6 @@
-package com.pidev.minesweeperapi.model;
+package com.pidev.minesweeperapi.controller.dto;
+
+import com.pidev.minesweeperapi.model.Cell;
 
 import java.util.ArrayList;
 import java.util.List;

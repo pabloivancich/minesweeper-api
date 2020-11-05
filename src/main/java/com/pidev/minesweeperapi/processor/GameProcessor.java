@@ -2,7 +2,7 @@ package com.pidev.minesweeperapi.processor;
 
 import com.pidev.minesweeperapi.factory.GameMapFactory;
 import com.pidev.minesweeperapi.model.Cell;
-import com.pidev.minesweeperapi.model.CellActionRequest;
+import com.pidev.minesweeperapi.controller.dto.CellActionRequest;
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.GameDifficulty;
 import com.pidev.minesweeperapi.model.GameMap;
