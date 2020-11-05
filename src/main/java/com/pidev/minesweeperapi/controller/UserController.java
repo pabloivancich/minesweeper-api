@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Api(value="User controller")
 @RestController()
-@RequestMapping("/users")
+@RequestMapping("/minesweeper/users")
 public class UserController {
 
     private final UserService userService;

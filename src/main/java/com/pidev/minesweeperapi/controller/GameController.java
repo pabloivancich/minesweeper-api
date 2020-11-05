@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Api(value="Games controller")
 @RestController()
-@RequestMapping("/games")
+@RequestMapping("/minesweeper/games")
 public class GameController {
 
     private final GameService gameService;

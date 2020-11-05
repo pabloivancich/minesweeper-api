@@ -24,13 +24,14 @@
 					"raw": "{\r\n    \"name\":\"player-two\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/users/",
+					"raw": "http://localhost:8080/minesweeper/users/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"minesweeper",
 						"users",
 						""
 					]
@@ -51,16 +52,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\":\"player-two\"\r\n}"
+					"raw": "{\r\n    \"name\":\"player-three\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/users/",
+					"raw": "http://localhost:8080/minesweeper/users/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"minesweeper",
 						"users",
 						""
 					]
@@ -84,18 +86,19 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"name\": \"juego-20\",\r\n\t\"timePlayed\": 0,\r\n\t\"minesRevealed\": 0,\r\n\t\"state\": \"PLAYING\",\r\n\t\"difficulty\": \"BEGINNER\",\r\n\t\"user\": {\r\n        \"id\": 1\r\n    }\r\n}"
+					"raw": "\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/games/juego-20?userId=1",
+					"raw": "http://localhost:8080/minesweeper/games/game-one?userId=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"minesweeper",
 						"games",
-						"juego-20"
+						"game-one"
 					],
 					"query": [
 						{
@@ -119,13 +122,14 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/games?userId=1",
+					"raw": "http://localhost:8080/minesweeper/games?userId=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"minesweeper",
 						"games"
 					],
 					"query": [
@@ -151,16 +155,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"name\": \"thegame\",\r\n\t\"difficulty\": \"BEGINNER\",\r\n\t\"user\": {\r\n        \"id\": 1\r\n    }\r\n}\r\n"
+					"raw": "{\r\n\t\"name\": \"game-one\",\r\n\t\"difficulty\": \"BEGINNER\",\r\n\t\"user\": {\r\n        \"id\": 1\r\n    }\r\n}\r\n"
 				},
 				"url": {
-					"raw": "http://localhost:8080/games",
+					"raw": "http://localhost:8080/minesweeper/games",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"minesweeper",
 						"games"
 					]
 				}
@@ -171,15 +176,22 @@
 			"name": "Save Game",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8080/games/current?userId=1",
+					"raw": "http://localhost:8080/minesweeper/games/current?userId=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"minesweeper",
 						"games",
 						"current"
 					],
@@ -204,14 +216,19 @@
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"row\":4,\r\n    \"column\":0,\r\n    \"action\": \"REVEAL\"\r\n}"
+				},
 				"url": {
-					"raw": "http://localhost:8080/games/cells?userId=1",
+					"raw": "http://localhost:8080/minesweeper/games/cells?userId=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"minesweeper",
 						"games",
 						"cells"
 					],
