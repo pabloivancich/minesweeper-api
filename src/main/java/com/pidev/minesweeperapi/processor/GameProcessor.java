@@ -6,6 +6,7 @@ import com.pidev.minesweeperapi.model.CellActionRequest;
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.model.GameDifficulty;
 import com.pidev.minesweeperapi.model.GameMap;
+import com.pidev.minesweeperapi.model.GameState;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Timer;
+import java.util.stream.Collectors;
 
 @Component
 public class GameProcessor {
@@ -129,32 +131,42 @@ public class GameProcessor {
      * @param cellActionRequest the cell action request.
      * @return a list of cells revealed.
      */
-    public List<Cell> revealCell(Game game, CellActionRequest cellActionRequest) {
+    public List<Cell> revealCells(Game game, CellActionRequest cellActionRequest) {
         Cell cell = game.getMap().getCells().get(cellActionRequest.getRow()).get(cellActionRequest.getColumn());
         game.addMove();
-        cell.setRevealed(true);
 
         // Check if cell is a mine and return the list of mines.
+        if(cell.isMine()) {
+            cell.setRevealed(true);
+            game.setState(GameState.FINISHED_LOSE);
+            return getMinesList(game);
+        }
 
-        // Check neighbour cells with 0 mines around.
-        List<Cell> cellsRevealed = revealCell(game, cell);
+        // Reveal neighbour cells with 0 mines around.
+        this.revealCells(game, cell);
 
-        return List.of(cell);
+        if(hasWon(game)) {
+            game.setState(GameState.FINISHED_WIN);
+        }
+
+        return this.getRevealedCells(game);
     }
 
-    private List<Cell> revealCell(Game game, Cell cell) {
-        List<Cell> cellsRevealed = new ArrayList<>();
-
-        if(cell.getMinesAround() != 0) {
-            System.out.println("Cell with " + cell.getMinesAround() + " mines around");
-            cellsRevealed.add(cell);
-        } else {
+    /**
+     * Reveals all the neighbour cells.
+     * @param game the game
+     * @param cell the cell to be revealed
+     */
+    private void revealCells(Game game, Cell cell) {
+        if(cell.getMinesAround() == 0 && !cell.isRevealed()) {
+            cell.setRevealed(true);
             List<Cell> neighbourCells = findNeighboursCells(game.getMap(), cell);
-            neighbourCells.forEach(neighbourCell -> {
-                revealCell(game, neighbourCell);
-            });
+            for(Cell neighbourCell: neighbourCells) {
+                revealCells(game, neighbourCell);
+            }
+        } else if(!cell.isRevealed()) {
+            cell.setRevealed(true);
         }
-        return cellsRevealed;
     }
 
     /**
@@ -165,7 +177,7 @@ public class GameProcessor {
     public List<Cell> markCellAsQuestionMark(Game game, CellActionRequest cellActionRequest) {
         Cell cell = game.getMap().getCells().get(cellActionRequest.getRow()).get(cellActionRequest.getColumn());
         game.addMove();
-        cell.setQuestionMark(true);
+        cell.setQuestionMark(!cell.isQuestionMark());
         return List.of(cell);
     }
 
@@ -177,9 +189,88 @@ public class GameProcessor {
     public List<Cell> markCellAsRedFlag(Game game, CellActionRequest cellActionRequest) {
         Cell cell = game.getMap().getCells().get(cellActionRequest.getRow()).get(cellActionRequest.getColumn());
         game.addMove();
-        game.addMinesRevealed();
-        cell.setRedFlag(true);
+
+        if (cell.isRedFlag()) {
+            cell.setRedFlag(false);
+            game.removeRedFlag();
+        } else {
+            cell.setRedFlag(true);
+            game.addRedFlag();
+        }
+
         return List.of(cell);
+    }
+
+    /**
+     * Retrieves the list of mines of a given game.
+     * @return the list of mines.
+     */
+    private List<Cell> getMinesList(Game game) {
+        List<Cell> mines = new ArrayList<>();
+
+        game.getMap().getCells().forEach(row -> {
+            mines.addAll(row.stream().filter(Cell::isMine).collect(Collectors.toList()));
+        });
+
+        return mines;
+    }
+
+    /**
+     * Retrieves the list of revealed cells of a given game.
+     * @return the list of revealed cells.
+     */
+    private List<Cell> getRevealedCells(Game game) {
+        List<Cell> revealedCells = new ArrayList<>();
+
+        game.getMap().getCells().forEach(row -> {
+            revealedCells.addAll(row.stream().filter(Cell::isRevealed).collect(Collectors.toList()));
+        });
+
+        return revealedCells;
+    }
+
+    /**
+     * Retrieves the list of red flags cells of a given game.
+     * @return the list of revealed cells.
+     */
+    private List<Cell> getRedFlags(Game game) {
+        List<Cell> redFlags = new ArrayList<>();
+
+        game.getMap().getCells().forEach(row -> {
+            redFlags.addAll(row.stream().filter(Cell::isRedFlag).collect(Collectors.toList()));
+        });
+
+        return redFlags;
+    }
+
+    /**
+     * Determines if the game has been won.
+     * @param game the game.
+     * @return true if the game has been won or false otherwise.
+     */
+    private boolean hasWon(Game game) {
+        int rows = game.getMap().getRows();
+        int columns = game.getMap().getColumns();
+        int mapMines = game.getMap().getMines();
+
+        int revealed = getRevealedCells(game).size();
+
+        int redFlags = game.getRedFlags();
+
+        return ((rows * columns) - mapMines) == revealed
+                && areAllMinesDiscovered(game);
+    }
+
+    /**
+     * Determines if all the mines are marked as red flags.
+     * @param game the game.
+     * @return true if all the mines are marked as red flags.
+     */
+    private boolean areAllMinesDiscovered(Game game) {
+        int mapMines = game.getMap().getMines();
+        int redFlags = game.getRedFlags();
+
+        return (mapMines == redFlags) && this.getMinesList(game).containsAll(getRedFlags(game));
     }
 
 }

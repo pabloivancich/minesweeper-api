@@ -38,17 +38,27 @@ public class GameService {
      * @return a list of games.
      */
     public List<Game> findByUser(User user) {
-        return gameRepository.findByUser(user);
+        List<Game> games = gameRepository.findByUser(user);
+        Optional<Game> currentGame = gameProcessor.getUserCurrentGame(user.getId());
+
+        currentGame.ifPresent(games::add);
+        return games;
     }
 
     /**
      * Retrieves the {@link Game} with the given name of the given user.
+     * If there is a current game, it will be replaced.
      * @param user the user.
      * @param gameName the game name.
      * @return the game.
      */
     public Optional<Game> findByUserAndName(User user, String gameName) {
-        return gameRepository.findByUserAndName(user, gameName);
+        Optional<Game> gameOptional = gameRepository.findByUserAndName(user, gameName);
+        gameOptional.ifPresent(game -> {
+            game.setState(GameState.PLAYING);
+            gameProcessor.storeGame(game);
+        });
+        return gameOptional;
     }
 
     /**
@@ -91,12 +101,12 @@ public class GameService {
      */
     public CellActionResponse executeCellAction(final Long userId, final CellActionRequest cellActionRequest) {
         Optional<Game> game = gameProcessor.getUserCurrentGame(userId);
-        List<Cell> cellsRevealed = new ArrayList<>();
 
+        List<Cell> cellsRevealed = new ArrayList<>();
         if(game.isPresent()) {
             switch (cellActionRequest.getAction()) {
                 case REVEAL:
-                    cellsRevealed = gameProcessor.revealCell(game.get(), cellActionRequest);
+                    cellsRevealed = gameProcessor.revealCells(game.get(), cellActionRequest);
                     break;
                 case QUESTION_MARK:
                     cellsRevealed = gameProcessor.markCellAsQuestionMark(game.get(), cellActionRequest);
@@ -109,7 +119,17 @@ public class GameService {
             }
         }
 
-        CellActionResponse response = CellActionResponse.createCellsReavealedResponse(cellsRevealed);
+        CellActionResponse response;
+        switch(game.get().getState()) {
+            case PLAYING: response = CellActionResponse.createCellsReavealedResponse(cellsRevealed);
+                            break;
+            case FINISHED_LOSE: response = CellActionResponse.createLoseResponse(cellsRevealed);
+                            break;
+            case FINISHED_WIN: response = CellActionResponse.createWinResponse(cellsRevealed);
+                            break;
+            default: response = null;
+                        break;
+        }
 
         return response;
     }

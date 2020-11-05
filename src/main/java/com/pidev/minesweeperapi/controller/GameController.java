@@ -3,7 +3,9 @@ package com.pidev.minesweeperapi.controller;
 import com.pidev.minesweeperapi.model.CellActionRequest;
 import com.pidev.minesweeperapi.model.CellActionResponse;
 import com.pidev.minesweeperapi.model.Game;
+import com.pidev.minesweeperapi.model.GameResponse;
 import com.pidev.minesweeperapi.model.User;
+import com.pidev.minesweeperapi.repository.GameRepository;
 import com.pidev.minesweeperapi.service.GameService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Api(value="Games controller")
 @RestController()
@@ -48,12 +51,15 @@ public class GameController {
             value = "",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<List<Game>> findByUser(
+    public ResponseEntity<List<GameResponse>> findByUser(
             @RequestParam final long userId
     ) {
         User user = new User(userId);
         List<Game> games = gameService.findByUser(user);
-        return ResponseEntity.ok(games);
+        List<GameResponse> response = games.stream().map(
+                GameResponse::createResponse
+        ).collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -61,7 +67,7 @@ public class GameController {
      * @param name the user name.
      * @return the user.
      */
-    @ApiOperation(value = "Retrieves the game with the given name for the given user.")
+    @ApiOperation(value = "Load the game with the given name for the given user.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Game retrieved successfully."),
             @ApiResponse(code = 404, message = "Game not found.")
@@ -71,13 +77,17 @@ public class GameController {
             value = "/{name}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Game> findByUserAndName(
+    public ResponseEntity<GameResponse> findByUserAndName(
             @RequestParam final long userId,
             @PathVariable("name") final String name
     ) {
         User user = new User(userId);
         Optional<Game> game = gameService.findByUserAndName(user, name);
-        return game.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+        return game.map(g -> {
+            GameResponse response = GameResponse.createResponse(g);
+            return ResponseEntity.ok().body(response);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**

@@ -3,7 +3,7 @@ CREATE TABLE games (
         name VARCHAR(255) UNIQUE NOT NULL,
         difficulty VARCHAR(255) NOT NULL,
         state VARCHAR(255) NOT NULL,
-        mines_revealed INT4,
+        red_flags INT4,
         moves INT4,
         time_played INT8,
         user_id INT8 NOT NULL,

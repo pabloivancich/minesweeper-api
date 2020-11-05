@@ -49,7 +49,7 @@ public class GameRepositoryTest {
         assertThat(gameSaved).isNotNull();
         assertThat(gameSaved.getName()).isEqualTo("testGame");
         assertThat(gameSaved.getTimePlayed()).isEqualTo(0);
-        assertThat(gameSaved.getMinesRevealed()).isEqualTo(0);
+        assertThat(gameSaved.getRedFlags()).isEqualTo(0);
         assertThat(gameSaved.getState()).isEqualTo(GameState.PLAYING);
         assertThat(gameSaved.getDifficulty()).isEqualTo(GameDifficulty.BEGINNER);
     }

@@ -32,8 +32,8 @@ public class Game {
     @Column(name = "moves")
     private int moves;
 
-    @Column(name = "mines_revealed")
-    private int minesRevealed;
+    @Column(name = "red_flags")
+    private int redFlags;
 
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
@@ -75,7 +75,7 @@ public class Game {
     ) {
         this.name = name;
         this.timePlayed = 0;
-        this.minesRevealed = 0;
+        this.redFlags = 0;
         this.state = GameState.PLAYING;
         this.difficulty = difficulty;
         this.moves = 0;
@@ -95,8 +95,8 @@ public class Game {
         return timePlayed;
     }
 
-    public int getMinesRevealed() {
-        return minesRevealed;
+    public int getRedFlags() {
+        return redFlags;
     }
 
     public GameState getState() {
@@ -139,8 +139,12 @@ public class Game {
         this.moves++;
     }
 
-    public void addMinesRevealed() {
-        this.minesRevealed++;
+    public void addRedFlag() {
+        this.redFlags++;
+    }
+
+    public void removeRedFlag() {
+        this.redFlags--;
     }
 
     public void setState(GameState state) {
