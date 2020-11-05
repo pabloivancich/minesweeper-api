@@ -41,7 +41,7 @@ public class GameControllerTest {
 
         given(gameService.findByUser(user)).willReturn(List.of(game));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/games/")
+        mockMvc.perform(MockMvcRequestBuilders.get("/minesweeper/games/")
                 .param("userId", String.valueOf(1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -59,7 +59,7 @@ public class GameControllerTest {
 
         given(gameService.findByUserAndName(anyObject(), anyString())).willReturn(Optional.of(game));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/games/gamename")
+        mockMvc.perform(MockMvcRequestBuilders.get("/minesweeper/games/gamename")
                 .param("userId", String.valueOf(1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -70,7 +70,7 @@ public class GameControllerTest {
     public void testFindByUserAndNameNotFound() throws Exception {
         given(gameService.findByUserAndName(anyObject(), anyString())).willReturn(Optional.empty());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/games/gamename")
+        mockMvc.perform(MockMvcRequestBuilders.get("/minesweeper/games/gamename")
                 .param("userId", String.valueOf(1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -86,7 +86,7 @@ public class GameControllerTest {
                 new GameMap()
         );
 
-        mockMvc.perform( MockMvcRequestBuilders.post("/games/")
+        mockMvc.perform( MockMvcRequestBuilders.post("/minesweeper/games/")
                 .content(JsonUtil.OBJECT_MAPPER.writeValueAsString(game))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -95,7 +95,7 @@ public class GameControllerTest {
 
     @Test
     public void testSave() throws Exception {
-        mockMvc.perform( MockMvcRequestBuilders.put("/games/current")
+        mockMvc.perform( MockMvcRequestBuilders.put("/minesweeper/games/current")
                 .param("userId", String.valueOf(1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

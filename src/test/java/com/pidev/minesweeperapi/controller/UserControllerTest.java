@@ -37,7 +37,7 @@ public class UserControllerTest {
 
         given(userService.findAll()).willReturn(List.of(user, otherUser));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/")
+        mockMvc.perform(MockMvcRequestBuilders.get("/minesweeper/users/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
@@ -48,7 +48,7 @@ public class UserControllerTest {
 
         given(userService.findByName(anyString())).willReturn(Optional.of(user));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/username")
+        mockMvc.perform(MockMvcRequestBuilders.get("/minesweeper/users/username")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("username"));
@@ -58,7 +58,7 @@ public class UserControllerTest {
     public void testFindByNameNotFound() throws Exception {
         given(userService.findByName(anyString())).willReturn(Optional.empty());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/username")
+        mockMvc.perform(MockMvcRequestBuilders.get("/minesweeper/users/username")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -67,7 +67,7 @@ public class UserControllerTest {
     public void testSave() throws Exception {
         User user = new User("name");
 
-        mockMvc.perform( MockMvcRequestBuilders.post("/users/")
+        mockMvc.perform( MockMvcRequestBuilders.post("/minesweeper/users/")
                 .content(JsonUtil.OBJECT_MAPPER.writeValueAsString(user))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
