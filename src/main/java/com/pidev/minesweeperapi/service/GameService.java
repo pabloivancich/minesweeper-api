@@ -1,5 +1,6 @@
 package com.pidev.minesweeperapi.service;
 
+import com.pidev.minesweeperapi.exception.InvalidCellException;
 import com.pidev.minesweeperapi.model.Cell;
 import com.pidev.minesweeperapi.controller.dto.CellActionRequest;
 import com.pidev.minesweeperapi.controller.dto.CellActionResponse;
@@ -101,7 +102,8 @@ public class GameService {
      * @param cellActionRequest the cell action request.
      * @return a cell action response.
      */
-    public CellActionResponse executeCellAction(final Long userId, final CellActionRequest cellActionRequest) {
+    public CellActionResponse executeCellAction(final Long userId, final CellActionRequest cellActionRequest)
+            throws InvalidCellException {
         Optional<Game> game = gameProcessor.getUserCurrentGame(userId);
 
         List<Cell> cellsRevealed = new ArrayList<>();

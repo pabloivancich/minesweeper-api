@@ -2,6 +2,7 @@ package com.pidev.minesweeperapi.controller;
 
 import com.pidev.minesweeperapi.controller.dto.CellActionRequest;
 import com.pidev.minesweeperapi.controller.dto.CellActionResponse;
+import com.pidev.minesweeperapi.exception.InvalidCellException;
 import com.pidev.minesweeperapi.model.Game;
 import com.pidev.minesweeperapi.controller.dto.GameResponse;
 import com.pidev.minesweeperapi.model.User;
@@ -147,7 +148,7 @@ public class GameController {
     public ResponseEntity<CellActionResponse> executeCellAction(
             @RequestParam final long userId,
             @RequestBody final CellActionRequest request
-    ) {
+    ) throws InvalidCellException {
         CellActionResponse response = gameService.executeCellAction(userId, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
