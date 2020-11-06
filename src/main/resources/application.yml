@@ -10,13 +10,17 @@ spring:
         format_sql: true
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/minesweeper
-    username: postgres
-    password: admin
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driverClassName: org.postgresql.Driver
 
   liquibase:
     change-log: classpath:db/changelog/liquibase-changeLog.xml
+
+hibernate:
+  hbm2ddl:
+    auto: none
 
 # Spring Boot Actuator Configuration
 management:

@@ -5,6 +5,6 @@ CREATE TABLE users (
 );
 
 INSERT INTO users
-(id, name)
+(name)
 VALUES
-(1, 'player-one');
+('player-one');

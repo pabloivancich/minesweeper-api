@@ -41,7 +41,7 @@ public class GameRepositoryTest {
                 "testGame",
                 GameDifficulty.BEGINNER,
                 user,
-                new GameMap()
+                null
         );
 
         Game gameSaved = gameRepository.save(gameToSave);

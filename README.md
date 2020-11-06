@@ -38,9 +38,9 @@ To execute the application tests using maven, you have to run
 ```
 Also, in the folder postman in the project root, there is a Postman collection to test te API.
 
-### Running Docker container
-You can create a docker image and run the app in a docker container. For this you need Docker installed in your machine. 
-
+### Running Docker containers
+You can create a docker image and run the app using docker compose.
+For this you need Docker installed in your machine. 
 
 Open a terminal and go to app root folder and build the application .jar file using maven wrapper.
 ```
@@ -48,19 +48,16 @@ Open a terminal and go to app root folder and build the application .jar file us
 ```
 Build a docker image from the Dockerfile.
 ```
-> docker build -t minesweeper-api .
-> docker run --rm -ti -d -p 8080:8080 --name minesweeper minesweeper-api
+> docker build -t minesweeper .
 ```
+Then, you need to execute docker-compose, in order to run a container with the Minesweeper API and 
+a container with the PostgreSQL database.
+```
+> docker-compose up
+```
+
 Now, the application is running on http://locahost:8080/minesweeper.
 
-If you want to access to the container you have to run
-```
-> docker attach minesweeper
-```
-If you want to remove the container, you have to run
-```
-> docker kill minesweeper
-```
 
 ### Development consideration and improvements.
 This is a Proof of concept project, so It can have some things to be improved.
